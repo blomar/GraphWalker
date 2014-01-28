@@ -25,6 +25,7 @@
  */
 package org.graphwalker.io.factory;
 
+import org.apache.commons.vfs2.*;
 import org.graphwalker.core.Bundle;
 import org.graphwalker.core.Model;
 import org.graphwalker.core.SimpleModel;
@@ -35,7 +36,7 @@ import org.jdom.Element;
 import org.jdom.filter.ElementFilter;
 import org.jdom.input.SAXBuilder;
 
-import java.io.InputStream;
+import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -71,11 +72,23 @@ public final class GraphMLModelFactory extends AbstractModelFactory {
      * <p/>
      * <p>create.</p>
      */
-    public Model create(String file) {
-        return parse(file, ResourceUtils.getResourceAsStream(file));
+    public Model create(String file) throws FileSystemException {
+      FileSystemManager fsManager = VFS.getManager();
+      FileObject fo = null;
+      try {
+        fo = fsManager.resolveFile(file);
+      } catch (FileSystemException e) {
+        return parse(ResourceUtils.getResourceAsStream(file));
+      }
+
+      try {
+        return parse(new FileInputStream(new File(fo.getName().getPath())));
+      } catch (java.io.FileNotFoundException e) {
+        throw new FileSystemException(e);
+      }
     }
 
-    private Model parse(String id, InputStream inputStream) {
+    private Model parse(InputStream inputStream) {
         SAXBuilder saxBuilder = new SAXBuilder();
         Document document;
 

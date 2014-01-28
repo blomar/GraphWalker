@@ -25,6 +25,7 @@
  */
 package org.graphwalker.io.factory;
 
+import org.apache.commons.vfs2.FileSystemException;
 import org.graphwalker.core.Model;
 
 import java.util.Set;
@@ -56,7 +57,7 @@ public interface ModelFactory {
      * @param file a {@link java.lang.String} object.
      * @return a {@link org.graphwalker.core.Model} object.
      */
-    Model create(String file);
+    Model create(String file) throws FileSystemException;
 
     /**
      * <p>getSupportedFileTypes.</p>
