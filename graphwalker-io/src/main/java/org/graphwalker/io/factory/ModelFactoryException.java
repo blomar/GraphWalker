@@ -23,7 +23,7 @@
  * THE SOFTWARE.
  * #L%
  */
-package org.graphwalker.maven.plugin.model;
+package org.graphwalker.io.factory;
 
 /**
  * @author Nils Olsson

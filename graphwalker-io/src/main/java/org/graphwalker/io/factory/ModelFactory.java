@@ -23,25 +23,45 @@
  * THE SOFTWARE.
  * #L%
  */
-package org.graphwalker.maven.plugin.model;
+package org.graphwalker.io.factory;
 
+import org.graphwalker.core.Model;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 /**
  * @author Nils Olsson
  */
-public abstract class AbstractModelFactory implements ModelFactory {
+public interface ModelFactory {
 
-    private final Set<String> supportedTypes = new HashSet<String>();
+    /**
+     * <p>accept.</p>
+     *
+     * @param file a {@link java.lang.String} object.
+     * @return a boolean.
+     */
+    boolean accept(String file);
 
-    public AbstractModelFactory(String... types) {
-        Collections.addAll(supportedTypes, types);
-    }
+    /**
+     * <p>validate.</p>
+     *
+     * @param file a {@link java.lang.String} object.
+     * @return a boolean.
+     */
+    boolean validate(String file);
 
-    public Set<String> getSupportedFileTypes() {
-        return supportedTypes;
-    }
+    /**
+     * <p>create.</p>
+     *
+     * @param file a {@link java.lang.String} object.
+     * @return a {@link org.graphwalker.core.Model} object.
+     */
+    Model create(String file);
+
+    /**
+     * <p>getSupportedFileTypes.</p>
+     *
+     * @return a {@link java.util.Set} object.
+     */
+    Set<String> getSupportedFileTypes();
 }
