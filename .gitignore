@@ -17,4 +17,5 @@ logs/
 target/
 work/
 amps-standalone/
+*/dependency-reduced-pom.xml
 
