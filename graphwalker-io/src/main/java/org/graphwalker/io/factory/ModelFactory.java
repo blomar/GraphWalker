@@ -57,7 +57,7 @@ public interface ModelFactory {
      * @param file a {@link java.lang.String} object.
      * @return a {@link org.graphwalker.core.Model} object.
      */
-    Model create(String file) throws FileSystemException;
+    Model create(String file);
 
     /**
      * <p>getSupportedFileTypes.</p>
