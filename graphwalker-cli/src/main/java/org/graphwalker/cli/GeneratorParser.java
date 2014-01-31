@@ -49,8 +49,6 @@ public class GeneratorParser {
     int numberOfTokens = 0;
     int parenthesesBalance = 0;
     for (; i < tokens.size(); i++) {
-      System.out.println(tokens.get(i).toString());
-
       if (tokens.get(i).type == Lexer.TokenType.LPARENTHESES) {
         parenthesesBalance++;
       } else if (tokens.get(i).type == Lexer.TokenType.RPARENTHESES) {
@@ -137,8 +135,6 @@ public class GeneratorParser {
     }
 
     for (int i = 0; i < tokens.size(); i++) {
-      System.out.println(tokens.get(i).toString());
-
       // First we expect a generator
       if (tokens.get(i).data instanceof PathGenerator) {
         if (generator instanceof CombinedPathGenerator) {

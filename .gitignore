@@ -19,3 +19,7 @@ work/
 amps-standalone/
 */dependency-reduced-pom.xml
 
+# Mac stuff #
+#############
+.DS_Store
+
