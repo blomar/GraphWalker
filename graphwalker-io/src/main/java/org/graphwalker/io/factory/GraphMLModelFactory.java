@@ -25,6 +25,7 @@
  */
 package org.graphwalker.io.factory;
 
+import org.apache.commons.io.FileUtils;
 import org.graphwalker.core.Bundle;
 import org.graphwalker.core.Model;
 import org.graphwalker.core.SimpleModel;
@@ -72,16 +73,25 @@ public final class GraphMLModelFactory extends AbstractModelFactory {
      * <p/>
      * <p>create.</p>
      */
-    public Model create(String file) {
-      try {
-        return parse(new FileInputStream(ResourceUtils.getResourceAsFile(file)));
-      } catch (Exception e) {
+    public Model create(String filename) {
         try {
-          return parse(ResourceUtils.getResourceAsStream(file));
-        } catch (ResourceException x) {
-            throw new ModelFactoryException(x);
+            File file = ResourceUtils.getResourceAsFile(filename);
+            if (file.isDirectory()) {
+                Model model = new SimpleModel();
+                for (Object fileObject : FileUtils.listFiles(file, new String[]{FILE_TYPE}, true)) {
+                    model = model.addModel(parse(new FileInputStream((File) fileObject)));
+                }
+                return model;
+            } else {
+                return parse(new FileInputStream(file));
+            }
+        } catch (Exception e) {
+            try {
+                return parse(ResourceUtils.getResourceAsStream(filename));
+            } catch (ResourceException x) {
+                throw new ModelFactoryException(x);
+            }
         }
-      }
     }
 
     private Model parse(InputStream inputStream) {
@@ -185,8 +195,8 @@ public final class GraphMLModelFactory extends AbstractModelFactory {
     private Model parseEdge(Model model, String id, Vertex source, Vertex target, String text) {
         String name = null, comment = null;
         Boolean blocked = false;
-        Guard guard = null;
-        Set<Action> actions = null;
+        Guard guard = new Guard("true");
+        Set<Action> actions = new HashSet<>();
         if (null != text && !"".equals(text)) {
             Tupel<String, String> commentTupel = parseComment(text);
             comment = commentTupel.getValue();
